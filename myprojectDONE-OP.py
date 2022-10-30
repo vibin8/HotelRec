@@ -3,50 +3,50 @@ import datetime
 now = datetime.datetime.now()
 
 
-def product_mgmt():
+def hotel_all():
     while True:
-        print("\t\t\t 1. Add New Product")
-        print("\t\t\t 2. List Product")
-        print("\t\t\t 3. Update Product")
-        print("\t\t\t 4. Delete Product")
+        print("\t\t\t 1. Add New hotel")
+        print("\t\t\t 2. List hotel")
+        print("\t\t\t 3. Update hotel")
+        print("\t\t\t 4. Delete hotel")
         print("\t\t\t 5. Back (Main Menu)")
         p = int(input("\t\t Enter Your Choice :"))
         if p == 1:
-            add_product()
+            add_hotel()
         if p == 2:
-            search_product()
+            search_hotel()
         if p == 3:
-            update_product()
+            update_hotel()
         if p == 4:
-            delete_product()
+            delete_hootel()
         if p == 5:
             break
 
 
-def purchase_mgmt():
+def review_col():
     while True:
-        print("\t\t\t 1. Add Order")
-        print("\t\t\t 2. List Order")
+        print("\t\t\t 1. Add review")
+        print("\t\t\t 2. List review")
         print("\t\t\t 3. Back (Main Menu)")
         o = int(input("\t\t Enter Your Choice :"))
         if o == 1:
-            add_order()
+            add_review()
         if o == 2:
-            list_order()
+            list_review()
         if o == 3:
             break
 
 
-def sales_mgmt():
+def hotel_req():
     while True:
-        print("\t\t\t 1. Sale Items")
-        print("\t\t\t 2. List Sales")
+        print("\t\t\t 1. Required keyword")
+        print("\t\t\t 2. List options")
         print("\t\t\t 3. Back (Main Menu)")
         s = int(input("\t\t Enter Your Choice :"))
         if s == 1:
-            sale_product()
+            req_hotel()
         if s == 2:
-            list_sale()
+            list_req()
         if s == 3:
             break
 
@@ -69,17 +69,17 @@ def create_database():
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="nobita3", database="stock")
     mycursor = mydb.cursor()
-    print(" Creating PRODUCT table")
-    sql = "CREATE TABLE if not exists product(pcode int(4) PRIMARY KEY,pname char(30) NOT NULL,price float(8,2),pqty int(4),pcat char(30));"
+    print(" Creating HOTEL table")
+    sql = "CREATE TABLE if not exists hotel(pcode int(4) PRIMARY KEY,pname char(30) NOT NULL,price float(8,2),pqty int(4),pcat char(30));"
     mycursor.execute(sql)
-    print("Creating ORDER table")
-    sql = "CREATE TABLE if not exists orders(orderid int(4)PRIMARY KEY,orderdate DATE,pcode char(30) NOT NULL ,pprice float(8,2),pqty int(4),supplier char(50),pcat char(30));"
+    print("Creating REVIEW table")
+    sql = "CREATE TABLE if not exists review(orderid int(4)PRIMARY KEY,orderdate DATE,pcode char(30) NOT NULL ,pprice float(8,2),pqty int(4),supplier char(50),pcat char(30));"
     mycursor.execute(sql)
-    print("ORDER table created")
-    print("Creating SALES table")
-    sql = "CREATE TABLE if not exists sales(salesid int(4) PRIMARY KEY,salesdate DATE,pcode char(30) references product(pcode),pprice float(8,2),pqty int(4),Total double(8,2));"
+    print("REVIEW table created")
+    print("Creating REQ table")
+    sql = "CREATE TABLE if not exists req(salesid int(4) PRIMARY KEY,salesdate DATE,pcode char(30) references product(pcode),pprice float(8,2),pqty int(4),Total double(8,2));"
     mycursor.execute(sql)
-    print("SALES table created")
+    print("REQ table created")
     sql = "CREATE TABLE if not exists user (uid char(6) PRIMARY KEY,uname char(30) NOT NULL,upwd char(30));"
     mycursor.execute(sql)
     print("USER table created")
@@ -95,32 +95,32 @@ def list_database():
         print(i)
 
 
-def add_order():
+def add_review():
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="nobita3", database="stock")
     mycursor = mydb.cursor()
     now = datetime.datetime.now()
-    sql = "INSERT INTO orders (orderid, orderdate, pcode,pprice, pqty, supplier, pcat) values(%s,%s,%s,%s,%s,%s,%s)"
-    code = int(input("Enter product code :"))
+    sql = "INSERT INTO review (orderid, orderdate, pcode,pprice, pqty, supplier, pcat) values(%s,%s,%s,%s,%s,%s,%s)"
+    code = int(input("Enter hotel code :"))
     oid = now.year+now.month+now.day+now.hour+now.minute+now.second
-    qty = int(input("Enter product quantity : "))
-    price = float(input("Enter Product unit price: "))
-    cat = input("Enter product category: ")
+    qty = int(input("Enter hotel quantity : "))
+    price = float(input("Enter hotel unit price: "))
+    cat = input("Enter hotel category: ")
     supplier = input("Enter Supplier details: ")
     val = (oid, now, code, price, qty, supplier, cat)
     mycursor.execute(sql, val)
     mydb.commit()
 
 
-def list_order():
+def list_review():
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="nobita3", database="stock")
     mycursor = mydb.cursor()
-    sql = "SELECT * from orders"
+    sql = "SELECT * from review"
     mycursor.execute(sql)
-    print("\t\t\t\t\t\t\t ORDER DETAILS")
+    print("\t\t\t\t\t\t\t REVIEW DETAILS")
     print("-"*85)
-    print("orderid date product code price quantity supplier category")
+    print("orderid date hotel code price quantity supplier category")
     print("-" * 85)
     for i in mycursor:
         print(i[0], "\t", i[1], "\t", i[2], "\t",
@@ -142,65 +142,65 @@ def db_mgmt():
             break
 
 
-def add_product():
+def add_hotel():
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="nobita3", database="stock")
     mycursor = mydb.cursor()
-    sql = "INSERT INTO product(pcode,pname,price,pqty,pcat) values (%s,%s,%s,%s,%s)"
-    code = int(input("\t\t Enter product code :"))
-    search = "SELECT count(*) FROM product WHERE pcode=%s;"
+    sql = "INSERT INTO hotel(pcode,pname,price,pqty,pcat) values (%s,%s,%s,%s,%s)"
+    code = int(input("\t\t Enter hotel code :"))
+    search = "SELECT count(*) FROM hotel WHERE pcode=%s;"
     val = (code,)
     mycursor.execute(search, val)
     for x in mycursor:
         cnt = x[0]
     if cnt == 0:
-        name = input("\t\t Enter product name :")
-        qty = int(input("\t\t Enter product quantity :"))
-        price = float(input("\t\t Enter product unit price :"))
-        cat = input("\t\t Enter Product category :")
+        name = input("\t\t Enter hotel name :")
+        qty = int(input("\t\t Enter hotel quantity :"))
+        price = float(input("\t\t Enter hotel unit price :"))
+        cat = input("\t\t Enter hotel category :")
         val = (code, name, price, qty, cat)
         mycursor.execute(sql, val)
         mydb.commit()
     else:
-        print("\t\t Product already exist")
+        print("\t\t Hotel already exist")
 
 
-def update_product():
+def update_hotel():
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="nobita3", database="stock")
     mycursor = mydb.cursor()
-    code = int(input("Enter the product code :"))
+    code = int(input("Enter the hotel code :"))
     qty = int(input("Enter the quantity :"))
-    sql = "UPDATE product SET pqty=pqty+%s WHERE pcode=%s;"
+    sql = "UPDATE hotel SET pqty=pqty+%s WHERE pcode=%s;"
     val = (qty, code)
     mycursor.execute(sql, val)
     mydb.commit()
-    print("\t\t Product details updated")
+    print("\t\t Hotel details updated")
 
 
-def delete_product():
+def delete_hotel():
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="nobita3", database="stock")
     mycursor = mydb.cursor()
-    code = int(input("Enter the product code :"))
-    sql = "DELETE FROM product WHERE pcode = %s;"
+    code = int(input("Enter the hotel code :"))
+    sql = "DELETE FROM hotel WHERE pcode = %s;"
     val = (code,)
     mycursor.execute(sql, val)
     mydb.commit()
     print(mycursor.rowcount, "record(s) deleted")
 
 
-def search_product():
+def search_hotel():
     while True:
-        print("\t\t\t 1. List all product")
-        print("\t\t\t 2. List product code wise")
-        print("\t\t\t 3. List product category wise")
+        print("\t\t\t 1. List all hotels")
+        print("\t\t\t 2. List hotels code wise")
+        print("\t\t\t 3. List hotel category wise")
         print("\t\t\t 4. Back (Main Menu)")
         s = int(input("\t\t Enter Your Choice :"))
         if s == 1:
-            list_product()
+            list_hotel()
         if s == 2:
-            code = int(input(" Enter product code :"))
+            code = int(input(" Enter hotel code :"))
             list_prcode(code)
         if s == 3:
             cat = input("Enter category :")
@@ -209,13 +209,13 @@ def search_product():
             break
 
 
-def list_product():
+def list_hotel():
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="nobita3", database="stock")
     mycursor = mydb.cursor()
-    sql = "SELECT * from product"
+    sql = "SELECT * from hotel"
     mycursor.execute(sql)
-    print("\t\t\t\t PRODUCT DETAILS")
+    print("\t\t\t\t HOTEL DETAILS")
     print("\t\t", "-" * 47)
     print("\t\t code name price quantity category")
     print("\t\t", "-" * 47)
@@ -228,10 +228,10 @@ def list_prcode(code):
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="nobita3", database="stock")
     mycursor = mydb.cursor()
-    sql = "SELECT * from product WHERE pcode=%s"
+    sql = "SELECT * from hotel WHERE pcode=%s"
     val = (code,)
     mycursor.execute(sql, val)
-    print("\t\t\t\t PRODUCT DETAILS")
+    print("\t\t\t\t HOTEL DETAILS")
     print("\t\t", "-" * 47)
     print("\t\t code name price quantity category")
     print("\t\t", "-" * 47)
@@ -240,19 +240,19 @@ def list_prcode(code):
     print("\t\t", "-" * 47)
 
 
-def sale_product():
+def sale_hotel():
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="nobita3", database="stock")
     mycursor = mydb.cursor()
-    pcode = input("Enter product code: ")
+    pcode = input("Enter hotel code: ")
     sid = int(input("Enter sales id: "))
-    sql = "SELECT count(*) from product WHERE pcode=%s;"
+    sql = "SELECT count(*) from hotel WHERE pcode=%s;"
     val = (pcode,)
     mycursor.execute(sql, val)
     for x in mycursor:
         cnt = x[0]
     if cnt != 0:
-        sql = "SELECT * from product WHERE pcode=%s;"
+        sql = "SELECT * from hotel WHERE pcode=%s;"
         val = (pcode,)
         mycursor.execute(sql, val)
         for x in mycursor:
@@ -263,29 +263,29 @@ def sale_product():
         if qty <= pqty:
             total = qty * price
             print("Collect Rs. ", total)
-            sql = "INSERT into sales values(%s,%s,%s,%s,%s,%s)"
+            sql = "INSERT into req values(%s,%s,%s,%s,%s,%s)"
             val = (sid, datetime.datetime.now(),
                    pcode, price, qty, total)
             mycursor.execute(sql, val)
-            sql = "UPDATE product SET pqty=pqty-%s WHERE pcode=%s"
+            sql = "UPDATE hotel SET pqty=pqty-%s WHERE pcode=%s"
             val = (qty, pcode)
             mycursor.execute(sql, val)
             mydb.commit()
         else:
             print("Quantity not available")
     else:
-        print("Product is not available")
+        print("Hotel is not available")
 
 
-def list_sale():
+def list_req():
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="nobita3", database="stock")
     mycursor = mydb.cursor()
-    sql = "SELECT * FROM sales"
+    sql = "SELECT * FROM req"
     mycursor.execute(sql)
-    print("\t\t\t\t SALES DETAILS")
+    print("\t\t\t\t REQ DETAILS")
     print("-" * 80)
-    print("Sales ID Date Product Code Price Quantity Total")
+    print("Sales ID Date hotel Code Price Quantity Total")
     print("-" * 80)
     for x in mycursor:
         print(x[0], "\t", x[1], "\t", x[2], "\t",
@@ -298,11 +298,11 @@ def list_prcat(cat):
                                    password="nobita3", database="stock")
     mycursor = mydb.cursor()
     print(cat)
-    sql = "SELECT * from product WHERE pcat =%s"
+    sql = "SELECT * from hotel WHERE pcat =%s"
     val = (cat,)
     mycursor.execute(sql, val)
     clrscr()
-    print("\t\t\t\t PRODUCT DETAILS")
+    print("\t\t\t\t HOTEL DETAILS")
     print("\t\t", "-" * 47)
     print("\t\t code name price quantity category")
     print("\t\t", "-" * 47)
@@ -347,22 +347,22 @@ def clrscr():
 
 while True:
     clrscr()
-    print("\t\t\t STOCK MANAGEMENT")
+    print("\t\t\t HOTEL REC-SYS")
     print("\t\t\t ****************\n")
-    print("\t\t 1. PRODUCT MANAGEMENT")
-    print("\t\t 2. PURCHASE MANAGEMENT")
-    print("\t\t 3. SALES MANAGEMENT")
+    print("\t\t 1. HOTEL MANAGEMENT")
+    print("\t\t 2. REVIEW MANAGEMENT")
+    print("\t\t 3. REQUIREMENT MANAGEMENT")
     print("\t\t 4. USER MANAGEMENT")
     print("\t\t 5. DATABASE SETUP")
     print("\t\t 6. EXIT\n")
     n = int(input("Enter your choice :"))
     if n == 1:
-        product_mgmt()
+        hotel_mgmt()
     if n == 2:
         # os.system('cls')
-        purchase_mgmt()
+        review_mgmt()
     if n == 3:
-        sales_mgmt()
+        req_mgmt()
     if n == 4:
         user_mgmt()
     if n == 5:
