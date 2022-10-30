@@ -360,9 +360,9 @@ while True:
         hotel_mgmt()
     if n == 2:
         # os.system('cls')
-        review_mgmt()
+        review_col()
     if n == 3:
-        req_mgmt()
+        hotel_req()
     if n == 4:
         user_mgmt()
     if n == 5:
